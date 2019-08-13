@@ -54,7 +54,7 @@ initialDraw = () => {
    
     let i=0
     setInterval(()=>{ 
-      if (this.state.y>640) return null;
+      if (this.state.y>640 || this.state.y<0) return null;
       let vely=this.state.velocityY
       let velx=this.state.velocityX
       this.setState({
