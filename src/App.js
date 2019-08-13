@@ -10,14 +10,20 @@ constructor(props){
   this.state={   
     x: 10,
     y: 640,
-    radius: 10
+    radius: 10,
+    velocityX: 0,
+    velocityY: 0,
+    right: true,
+    ball: {
+      
+    }
 }
 
-  window.addEventListener("keydown",(e)=>{this.handleSpace()})
+  window.addEventListener("keydown",(e)=>{this.handleSpace(e)})
 }
 
 
-draw = () => {
+initialDraw = () => {
   const ctx = this.refs.canvas.getContext("2d");
   // change this colour to change the colour of your 
   // "pen" in the canvas 
@@ -31,20 +37,40 @@ draw = () => {
 }
 
   componentDidMount() {
-    this.draw()
+    this.initialDraw()
    
   }
 
-  handleClick=(e)=>{
-    e.persist()
-    this.setState({
-      x: e.clientX,
-      y: e.clientY+10,
-      radius:this.state.radius+2
+
+
+   handleSpace=(e)=>{
+     if(e.key!==" ") return null;
+     this.setState({
+      x: this.state.x+2,
+      y: this.state.y-2,
+      velocityY: 10,
+      velocityX: 1
     })
+   
+    let i=0
+    setInterval(()=>{ 
+      if (this.state.y>640) return null;
+      let vely=this.state.velocityY
+      let velx=this.state.velocityX
+      this.setState({
+        x: this.state.x+velx,
+        y: this.state.y-vely,
+        velocityY: this.state.velocityY-1,
+      })
+      this.trajectoryDraw()
+      
+    }, 100);
+    // this.trajectoryDraw()
+    
+  }
+
+  trajectoryDraw=()=>{
     const ctx = this.refs.canvas.getContext("2d");
-    // change this colour to change the colour of your 
-    // "pen" in the canvas 
     ctx.fillStyle = "yellow";
     ctx.beginPath();
     ctx.clearRect(0, 0, 450, 650);
@@ -55,33 +81,16 @@ draw = () => {
     ctx.restore();
   }
 
-   handleSpace=()=>{
-    console.log("Alex")
-    // debugger
-  
-    this.setState({
-      x: this.state.x+30,
-      y: this.state.x+30,
-    })
-    const ctx = this.refs.canvas.getContext("2d");
-    // change this colour to change the colour of your 
-    // "pen" in the canvas 
-    ctx.fillStyle = "yellow";
-    ctx.beginPath();
-    ctx.clearRect(0, 0, 450, 650);
-    ctx.arc(this.state.x, this.state.y,                        
-            this.state.radius, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.stroke();
-    ctx.restore();
-  }
+
+
+
 
 
   render(){
-    
+    console.log(this.state)
   return (
     <div>
-        <canvas onKeyDown={()=>{ }}  ref="canvas" width={450} height={650} className="App" ></canvas>
+        <canvas  ref="canvas" width={450} height={650} className="App" ></canvas>
      </div>
   ) 
 }
@@ -89,6 +98,45 @@ draw = () => {
 
 export default App;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // window.addEventListener("keydown",(e)=>{this.handleSpace()})
 
-// onMouseMove={this.handleClick}
+// 
+
+
+
+
+  // handleClick=(e)=>{
+  //   this.setState({
+  //     x: e.clientX,
+  //     y: e.clientY+10,
+     
+  //   })
+  //   const ctx = this.refs.canvas.getContext("2d");
+  //   // change this colour to change the colour of your 
+  //   // "pen" in the canvas 
+  //   ctx.fillStyle = "yellow";
+  //   ctx.beginPath();
+  //   // ctx.clearRect(0, 0, 450, 650);
+  //   ctx.arc(this.state.x, this.state.y,                        
+  //           this.state.radius, 0, 2 * Math.PI);
+  //   ctx.fill();
+  //   ctx.stroke();
+  //   ctx.restore();
+  // }
