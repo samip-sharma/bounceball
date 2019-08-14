@@ -11,7 +11,7 @@ constructor(props){
     x: 10,
     y: 640,
     radius: 10,
-    velocityX: 0,
+    velocityX: -2,
     velocityY: 0,
     right: true,
     ball: {
@@ -44,30 +44,33 @@ initialDraw = () => {
 
 
    handleSpace=(e)=>{
+    // const velocity
+    // if (this.state.velocityX===0){velocity=10}else{velocity=!this.state.velocityX}
      if(e.key!==" ") return null;
      this.setState({
       x: this.state.x+2,
       y: this.state.y-2,
       velocityY: 10,
-      velocityX: 1
+      velocityX: -(this.state.velocityX)
     })
    
     let i=0
     setInterval(()=>{ 
-      if (this.state.y>640 || this.state.y<0) return null;
-      let vely=this.state.velocityY
-      let velx=this.state.velocityX
+      if (this.state.y>=639 || this.state.y<=0 || this.state.x===440)  return null;
       this.setState({
-        x: this.state.x+velx,
-        y: this.state.y-vely,
-        velocityY: this.state.velocityY-1,
+        x: Math.min(this.state.x+this.state.velocityX,440),
+        y: Math.min(this.state.y-this.state.velocityY, 640),
+        velocityY: Math.max(this.state.velocityY-1,-15)
       })
+
       this.trajectoryDraw()
       
     }, 100);
     // this.trajectoryDraw()
     
   }
+
+
 
   trajectoryDraw=()=>{
     const ctx = this.refs.canvas.getContext("2d");
